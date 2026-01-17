@@ -12,14 +12,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        val db = androidx.room.Room.databaseBuilder<com.example.notesapp.data.AppDatabase>(
+            context = applicationContext,
+            name = applicationContext.getDatabasePath("notes.db").absolutePath
+        ).setDriver(androidx.sqlite.driver.bundled.BundledSQLiteDriver())
+         .setQueryCoroutineContext(kotlinx.coroutines.Dispatchers.IO)
+         .build()
+
         setContent {
-            App()
+            App(db.noteDao())
         }
     }
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    App()
 }
